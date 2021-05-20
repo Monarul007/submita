@@ -25,6 +25,7 @@ class PermissionsDefaultSeeder extends Seeder
         Permission::create(['name' => 'publish assignments']);
         Permission::create(['name' => 'unpublish assignments']);
         Permission::create(['name' => 'submit assignments']);
+        Permission::create(['name' => 'view assignments']);
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'teacher']);
@@ -32,8 +33,10 @@ class PermissionsDefaultSeeder extends Seeder
         $role1->givePermissionTo('publish assignments');
         $role1->givePermissionTo('unpublish assignments');
         $role1->givePermissionTo('delete assignments');
+        $role1->givePermissionTo('view assignments');
 
         $role2 = Role::create(['name' => 'student']);
+        $role2->givePermissionTo('view assignments');
         $role2->givePermissionTo('submit assignments');
 
         $role3 = Role::create(['name' => 'super-admin']);

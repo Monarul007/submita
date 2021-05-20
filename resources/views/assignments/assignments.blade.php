@@ -86,7 +86,8 @@
                                             {{ $row->created_at }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/assignment/edit/{{ $row->id }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <a href="/assignment/edit/{{ $row->id }}" class="text-indigo-600 hover:text-indigo-900">Edit</a> | 
+                                            <a href="/assignment/delete/{{ $row->id }}" class="text-red-600 hover:text-red-900">Delete</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -97,10 +98,6 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <p class="text-center text-gray-500 text-xs">
-                &copy;2021 Monarul007. All rights reserved.
-            </p>
         </div>
     </div>
 </x-app-layout>

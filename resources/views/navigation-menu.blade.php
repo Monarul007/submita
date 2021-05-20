@@ -20,9 +20,9 @@
                         {{ __('Create Assignments') }}
                     </x-jet-nav-link>
                     @endcan
-                    @can('edit assignments')
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Edit Assignments') }}
+                    @can('view assignments')
+                    <x-jet-nav-link href="{{ route('assignments.view') }}" :active="request()->routeIs('assignments.view')">
+                        {{ __('View Assignments') }}
                     </x-jet-nav-link>
                     @endcan
                     @can('submit assignments')

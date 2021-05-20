@@ -9,6 +9,7 @@ use App\Models\SubmitedFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Storage;
 
 class AssignmentsController extends Controller
 {
@@ -103,5 +104,59 @@ class AssignmentsController extends Controller
         $user = Auth::id();
         $assignments = Assignment::where('user_id', $user)->get();
         return view('assignments.assignments')->with(compact('assignments'));
+    }
+
+    public function edit(Request $req, $id = null){
+        $data = Assignment::where('id', $id)->get();
+        $files = AssignmentFile::where('assignment_id', $id)->get();
+
+        $assignment = Assignment::find($id);
+        $expire = $assignment->expire_at;
+
+        if($req->isMethod('post')){
+            $data = $req->all();
+            $expire = $data['due-dates']?? $expire;
+            Assignment::where(['id'=>$id])->update(['name'=>$data['name'],'instructions'=>$data['instructions'],'expire_at'=>$expire]);
+            
+            if ($req->hasfile('files')) {
+                $images = $req->file('files');
+                foreach($images as $image) {
+                    $name = $image;
+                    $extension = $image->getClientOriginalExtension();
+                    $filename = time().'.'.$extension;
+                    $path = $image->storeAs('images/assignment-files', $filename, 'public');
+                    AssignmentFile::create([
+                        'file' => $filename,
+                        'assignment_id' => $id,
+                        'user_id' => Auth::id()
+                    ]);
+                }
+            }
+            return redirect('user/assignment/all')->with('flash_message_success', 'Assigment Updated Successfully!');
+        }
+        return view('assignments.edit')->with(compact('data','files'));
+    }
+
+    public function deleteFile($id){
+        $file = AssignmentFile::find($id);
+        $file->delete();
+        return "File deleted successfully!";
+    }
+
+    public function deleteAssignment($id){
+        $assignment = Assignment::find($id);
+        $assignmentFiles = AssignmentFile::where('assignment_id',$id)->get();
+        foreach( $assignmentFiles as $row ){
+            $file = $row->file;
+            $image_path = 'storage/images/assignment-files/'.$file;
+            if(file_exists($image_path)) {
+                @unlink($image_path);
+            }else{
+                return redirect('user/assignment/all')->with('flash_message_error', 'File not found!');
+            }
+        }
+        $assignmentFile = AssignmentFile::where('assignment_id',$id)->delete();
+        $assignment->delete();
+        return redirect('user/assignment/all')->with('flash_message_success', 'Assigment deleted successfully!');
     }
 }

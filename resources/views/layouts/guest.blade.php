@@ -12,7 +12,6 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
@@ -20,5 +19,20 @@
         <div class="font-sans text-gray-900 antialiased">
             {{ $slot }}
         </div>
+
+        <style>
+        #overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgb(255 87 34 / 44%);
+            z-index: 2;
+            cursor: pointer;
+        }
+        </style>
     </body>
 </html>

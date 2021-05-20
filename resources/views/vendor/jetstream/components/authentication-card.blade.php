@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+<div id="overlay" class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100" style="background-image: url('storage/images/theme/undraw_remotely_2j6y.svg');background-repeat: no-repeat; background-size: contain;">
     <div>
         {{ $logo }}
     </div>

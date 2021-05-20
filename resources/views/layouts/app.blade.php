@@ -20,7 +20,7 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script> -->
     </head>
@@ -42,6 +42,11 @@
             <!-- Page Content -->
             <main>
                 {{ $slot }}
+                <br>
+                <p class="text-center text-gray-500 text-xs">
+                    &copy;2021 Monarul007. All rights reserved.
+                </p>
+                <br>
             </main>
         </div>
 
