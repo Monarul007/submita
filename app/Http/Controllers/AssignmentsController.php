@@ -159,4 +159,10 @@ class AssignmentsController extends Controller
         $assignment->delete();
         return redirect('user/assignment/all')->with('flash_message_success', 'Assigment deleted successfully!');
     }
+
+    public function submissions(){
+        $user = Auth::id();
+        $submissions = Submission::where('user_id', $user)->get();
+        return view('assignments.myassignments')->with(compact('submissions'));
+    }
 }

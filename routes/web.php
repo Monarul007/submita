@@ -38,4 +38,5 @@ Route::middleware(['auth'])->group(function () {
     //Submit Assignments
     Route::match(['get','post'],'/user/assignment/submit',[AssignmentsController::class, 'submit']
     )->name('assignments.submit');
+    Route::match(['get','post'],'/user/submissions/all',[AssignmentsController::class, 'submissions'])->name('submissions.view');
 });

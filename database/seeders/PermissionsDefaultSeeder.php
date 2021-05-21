@@ -26,6 +26,7 @@ class PermissionsDefaultSeeder extends Seeder
         Permission::create(['name' => 'unpublish assignments']);
         Permission::create(['name' => 'submit assignments']);
         Permission::create(['name' => 'view assignments']);
+        Permission::create(['name' => 'view submissions']);
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'teacher']);
@@ -34,10 +35,12 @@ class PermissionsDefaultSeeder extends Seeder
         $role1->givePermissionTo('unpublish assignments');
         $role1->givePermissionTo('delete assignments');
         $role1->givePermissionTo('view assignments');
+        $role1->givePermissionTo('view submissions');
 
         $role2 = Role::create(['name' => 'student']);
         $role2->givePermissionTo('view assignments');
         $role2->givePermissionTo('submit assignments');
+        $role1->givePermissionTo('view submissions');
 
         $role3 = Role::create(['name' => 'super-admin']);
         // gets all permissions via Gate::before rule; see AuthServiceProvider

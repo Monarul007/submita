@@ -30,6 +30,11 @@
                         {{ __('Submit Assignments') }}
                     </x-jet-nav-link>
                     @endcan
+                    @can('view submissions')
+                    <x-jet-nav-link href="{{ route('submissions.view') }}" :active="request()->routeIs('submissions.view')">
+                        {{ __('Submited Assignments') }}
+                    </x-jet-nav-link>
+                    @endcan
                 </div>
             </div>
 
