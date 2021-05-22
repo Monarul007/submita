@@ -9,4 +9,13 @@ class Assignment extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function files(){
+        return $this->hasMany(AssignmentFile::class, 'assignment_id');
+    }
 }

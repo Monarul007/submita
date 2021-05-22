@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Your Assignments') }}
+            {{ __('Submited Assignments') }}
         </h2>
     </x-slot>
 
@@ -39,58 +39,49 @@
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Name
+                                            Assignment
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
+                                            Class
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Expire Time
+                                            Section
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Created At
+                                            Message
                                         </th>
-                                        <th scope="col" class="relative px-6 py-3">
-                                            <span class="sr-only">Edit</span>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Submited at
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 @php $now = date("Y-m-d H:i:s"); @endphp
-                                @foreach($assignments as $row)
+                                @foreach($submissions as $row)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900">
-                                                {{ $row->name }}
+                                                {{ $row->id }}
                                                 </div>
                                             </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($row->expire_at > $now )
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                Active
-                                                </span>
-                                            @else
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                expired
-                                                </span>
-                                            @endif
+                                            <div class="text-sm font-medium text-gray-900">{{ $row->class }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $row->expire_at }}
+                                            {{ $row->section }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $row->created_at }}
+                                            {{ $row->message }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/assignment/edit/{{ $row->id }}" class="text-indigo-600 hover:text-indigo-900">Edit</a> | 
-                                            <a href="/assignment/delete/{{ $row->id }}" class="text-red-600 hover:text-red-900">Delete</a>
+                                            {{ $row->created_at }}
                                         </td>
                                     </tr>
-                                    @endforeach
+                                @endforeach
                                     <!-- More people... -->
                                 </tbody>
                             </table>

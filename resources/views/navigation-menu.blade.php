@@ -22,7 +22,12 @@
                     @endcan
                     @can('view assignments')
                     <x-jet-nav-link href="{{ route('assignments.view') }}" :active="request()->routeIs('assignments.view')">
-                        {{ __('View Assignments') }}
+                        {{ __('My Assignments') }}
+                    </x-jet-nav-link>
+                    @endcan
+                    @can('student assignments')
+                    <x-jet-nav-link href="{{ route('assignments.all') }}" :active="request()->routeIs('assignments.all')">
+                        {{ __('Assignments') }}
                     </x-jet-nav-link>
                     @endcan
                     @can('submit assignments')

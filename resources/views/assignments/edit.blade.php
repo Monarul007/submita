@@ -8,7 +8,7 @@
     @endforeach
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Assignment') }}
+            {{ __('Update Assignment') }}
         </h2>
     </x-slot>
 

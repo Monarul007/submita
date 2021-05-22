@@ -27,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
 
     //Manage Assignments
     Route::match(['get','post'],'/user/assignment/all',[AssignmentsController::class, 'assignments'])->name('assignments.view');
+
+    Route::match(['get','post'],'/user/assignments',[AssignmentsController::class, 'allassignments'])->name('assignments.all');
     
     Route::match(['get','post'],'/user/assignment/create',[AssignmentsController::class, 'create']
     )->name('assignments.create');

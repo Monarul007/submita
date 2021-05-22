@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Your Assignments') }}
+            {{ __('Assignments') }}
         </h2>
     </x-slot>
 
@@ -31,73 +31,141 @@
             <br>
             @endif
 
-            <div class="flex flex-col">
-                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Name
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Expire Time
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Created At
-                                        </th>
-                                        <th scope="col" class="relative px-6 py-3">
-                                            <span class="sr-only">Edit</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                @php $now = date("Y-m-d H:i:s"); @endphp
-                                @foreach($assignments as $row)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                {{ $row->name }}
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($row->expire_at > $now )
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                Active
-                                                </span>
+            @php 
+                $now = date("Y-m-d H:i:s");
+            @endphp
+            @foreach($assignments as $row)
+            <div class="w-full flex flex-col bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+                <div class="bg-gray-200 text-gray-700 text-lg px-6 py-4">{{ $row->name }}</div>
+
+                <div class="flex justify-between items-center px-6 py-4">
+                    @if($row->expire_at > $now )
+                    <div class="bg-orange-600 text-xs uppercase px-2 py-1 rounded-full border border-green-600 text-green-600 font-bold"> Active </div>
+                    @else 
+                    <div class="bg-orange-600 text-xs uppercase px-2 py-1 rounded-full border border-red-600 text-red-600 font-bold"> Expired </div>
+                    @endif
+                    <div class="text-sm"><?php
+                        date_default_timezone_set('Asia/Dhaka');
+                        $date = date_create($row->expire_at);
+                        echo "<b>Deadline:</b> ".date_format($date, 'jS F Y \: g:i A');
+                    ?></div>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="findme border rounded-lg p-4 bg-gray-200">
+                        <?php 
+                        $string = $row->instructions;
+                        if (strlen($string) > 200) {
+                        
+                            // truncate string
+                            $stringCut = substr($string, 0, 200);
+                            $endPoint = strrpos($stringCut, ' ');
+                        
+                            //if the string doesn't contain any space then it will cut without word basis.
+                            $string = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+                            $gg = substr($row->instructions,100,strlen($row->instructions));
+                            $string .= '<span class="read-more-show hide_content">...Read More<i class="fa fa-angle-down"></i></span><span class="read-more-content">'.$gg.'<span class="font-bold read-more-hide hide_content">Less <i class="fa fa-angle-up"></i></span> </span>';
+                        }else{
+                            $string = $row->instructions;
+                        }
+                        echo $string;
+                        ?>
+                    </div>
+                    <br>
+                    <div class="container mx-auto">
+                    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+                        @foreach( $row->files as $index)
+                        <?php
+                            $filename = $index->file;
+                            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                        ?>
+                        <!-- Column -->
+                        <div class="relative my-1 px-1 w-32 lg:my-4 lg:px-4">
+                            <!-- Article -->
+                            <article class="overflow-hidden rounded-lg shadow-lg" style="max-height: 100px;">
+                                    <a href="/storage/images/assignment-files/{{ $index->file }}">
+                                        @if ($ext == 'gif' || $ext == 'png' || $ext == 'jpg' || $ext == 'webp')
+                                            <img alt="Placeholder" class="block h-auto w-full" src="/storage/images/assignment-files/{{ $index->file }}">
+                                            @elseif($ext == 'pdf')
+                                            <iframe src="/storage/images/assignment-files/{{ $index->file }}" frameborder="0" style="width:100%; height:150px;"></iframe>
+                                            @elseif($ext == 'doc' || $ext == 'docx')
+                                            <iframe src="/storage/images/assignment-files/{{ $index->file }}" frameborder="0" style="width:100%; height:auto;"></iframe>
                                             @else
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                expired
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $row->expire_at }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $row->created_at }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/assignment/edit/{{ $row->id }}" class="text-indigo-600 hover:text-indigo-900">Edit</a> | 
-                                            <a href="/assignment/delete/{{ $row->id }}" class="text-red-600 hover:text-red-900">Delete</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                    <!-- More people... -->
-                                </tbody>
-                            </table>
+                                            <p>No Preview Available!</p>
+                                        @endif
+                                    
+                                </a>
+                            </article>
+                            <!-- END Article -->
+                            <div class="absolute bottom-0 right-1.5">
+                                <a href="/storage/images/assignment-files/{{ $index->file }}" download="{{ $index->file }}" class="bg-blue-500 h-5 w-5 text-white text-center font-extrabold flex items-center justify-center rounded-full"><svg class="fill-current w-4 h-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg></a>
+                            </div>
+                        </div>
+                        <!-- END Column -->
+                        @endforeach
+                    </div>
+                </div>
+                </div>
+
+                <div class="bg-gray-200 px-6 py-4">
+                    <div class="uppercase text-xs text-gray-600 font-bold">Assignment By</div>
+
+                    <div class="flex items-center pt-3">
+                        <div class="bg-blue-700 w-12 h-12 flex justify-center items-center rounded-full uppercase font-bold text-white">
+                            <?php
+                                $str = $row->user->name;
+                                $words = explode(' ', $str);
+                                $result = $words[0][0]. $words[1][0];
+                                echo $result; 
+                            ?></div>
+                        <div class="ml-4">
+                        <p class="font-bold">{{ $row->user->name }}</p>
+                        <p class="text-sm text-gray-700 mt-1">Instructor</p>
                         </div>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
     </div>
+
+    <style type="text/css">
+        .read-more-show{
+            cursor:pointer;
+            color: #ed8323;
+        }
+        .read-more-hide{
+            cursor:pointer;
+            color: #ed8323;
+        }
+
+        .hide_content{
+            display: none;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        // Hide the extra content initially, using JS so that if JS is disabled, no problemo:
+            $('.read-more-content').addClass('hide_content')
+            $('.read-more-hide').addClass('hide_content')
+            $('.read-more-show').removeClass('hide_content')
+
+            // Set up the toggle effect:
+            $("body").on('click', '.read-more-show', function(e) {
+              $(this).next('.read-more-content').removeClass('hide_content');
+              $(this).addClass('hide_content');
+              var p = $(this).closest('.findme').find('.read-more-hide');
+              p.removeClass('hide_content');
+              e.preventDefault();
+            });
+
+            // Changes contributed by @diego-rzg
+            $("body").on('click','.read-more-hide', function(e) {
+              var p = $(this).closest('.findme').find('.read-more-content');
+              p.addClass('hide_content');
+              p.prev('.read-more-show').removeClass('hide_content'); // Hide only the preceding "Read More"
+              $(this).addClass('hide_content');
+              e.preventDefault();
+            });
+    </script>
 </x-app-layout>
