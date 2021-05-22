@@ -102,7 +102,7 @@ class AssignmentsController extends Controller
 
     public function assignments(){
         $user = Auth::id();
-        $assignments = Assignment::where('user_id', $user)->get();
+        $assignments = Assignment::get();
         return view('assignments.assignments')->with(compact('assignments'));
     }
 
